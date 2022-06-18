@@ -16,11 +16,11 @@ This are the instructions for development instalation in linux environment.
 
 - Install it
 
-        ```shell
+```shell
         $ python -m venv lpa_venv
         $ source lpa_venv/bin/activate
         $ pip install .  
-        ```
+```
 
 - Download hdrgen from (http://www.anyhere.com/)
 - Copy the contents of the bin folder to `venv/bin/`
@@ -29,7 +29,7 @@ This are the instructions for development instalation in linux environment.
 
 ## Run server
 
-    ```shell
+```shell
     $ export FLASK_APP=hello
     $ flask run
-    ```
+```
