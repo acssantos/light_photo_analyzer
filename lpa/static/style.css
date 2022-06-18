@@ -1,0 +1,88 @@
+/* Remove the navbar's default margin-bottom and rounded borders */
+.navbar {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.caption{
+  text-align: right;
+
+}
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {background-color: #f1f1f1;}
+
+.main{
+  background-color: #FFFFFF;
+}
+
+/* Set gray background color and 100% height */
+.side {
+  background-color: #f1f1f1;
+  height: 200%;
+}
+
+/* Set black background color, white text and some padding */
+footer {
+  background-color: #555;
+  color: white;
+  padding: 15px;
+}
+
+.jumbotron{
+  background-color: #555;
+  color: white;
+}
+
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+  .sidenav {
+    height: auto;
+    padding: 15px;
+  }
+  .row.content {height:auto;}
+
+}
+
+#divzoom{
+  height: 100px;
+  width: 100px;
+  padding: 0px 0px 0px 0px;
+  color: black;
+  position: absolute;
+  float: left;
+  border: 2px solid red;
+  display: None;
+
+}
+
+
+#info{
+  padding: 10px 10px 10px 10px;
+  color:black;
+  position:absolute;
+  float:right;
+  border:2px solid black;
+
+}
+
+
+.img-icon-sm{
+  width: 50%;	
+}
+
+.img-icon{
+  width: 100%;	
+}
+
+#spiner {
+  /*background: url("Spin-1s-200px.gif") no-repeat scroll center center rgba(255, 255, 255, 0.5);*/
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+
+#to-home{
+  color: white;
+  text-decoration: none; /* no underline */
+}

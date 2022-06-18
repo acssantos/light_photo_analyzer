@@ -1,0 +1,201 @@
+{%extends "layout.html" %}
+
+{% block head %}
+    {{ super() }}
+
+
+  <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="{{ url_for('static', filename='/js/plot_rsp.js')}}"></script>
+  <script src="{{ url_for('static', filename='/js/luminance.js') }}"></script>
+  <script src="{{ url_for('static', filename='./js/plot_heatmap.js') }}"></script>
+  <script>
+    plot_heatmap("{{ session['hdr_file'] + '.lumi' }}")
+  </script>
+  <script>
+    plot_rsp("{{session['rsp_path']}}");
+  </script>
+  <script>
+    $(document).ready(function () {
+
+  				$('a[data-toggle="collapse"]').click(function () {
+  					$(this).find('span.toggle-icon').toggleClass('glyphicon-collapse-up glyphicon-collapse-down');
+          })
+
+          $('a.toggle-img').click(function () {
+  					$(this).find('img').toggleClass('img-icon img-icon-sm');
+          })
+
+  			})
+  </script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid text-center">
+  <div class="row content">
+    <div class="col-sm-1 side">
+    </div>
+    <div class="col-sm-10 text-left main">
+      <h2>Results</h2>
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <a data-toggle="collapse" data-target="#color_collapse" >
+            <span class="toggle-icon glyphicon glyphicon-collapse-down"></span>Falsecolor</a>
+        </div>
+        <div id="color_collapse" class="collapse in panel-body">
+
+
+         <div id="spiner">
+           <img src="{{ url_for('static', filename='Spin-1s-200px.svg') }}"/>
+         </div>
+
+          <div id="heatmap"></div>
+         </div>
+      </div>
+
+      <!-- <div class="col"> -->
+        <!-- <div class="col-md-6">
+            <div class="thumbnail">
+              <strong> False color</strong>
+              <a href="{{ session['hdr_file'] + '_fc.jpg'}}">
+              <img class="img-responsive" src="{{ session['hdr_file'] + '_fc.jpg'}}" alt="false color" style="width:100%">
+               </a>
+               <div class="caption">
+                 <a href="{{ url_for('falsecolor') }}">
+                   <button type="button" class="btn btn-info">
+                     <i class="glyphicon glyphicon-picture"></i> Analyze false color </span>
+                   </button>
+                 </a>
+               <div class="btn-group">
+                   <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                     <i class="glyphicon glyphicon-download"></i> Save false color image <span class="caret"></span>
+                   </button>
+                   <ul class="dropdown-menu" role="menu">
+                     <li> <a href="{{ session['hdr_file'] + '_fc.hdr'}} " download> RADIANCE RGBE</a></li>
+                     <li> <a href="{{ session['hdr_file'] + '_fc.jpg'}}" download> JPEG-HDR</a></li>
+                     <li> <a href="{{ session['hdr_file'] + '_brightness.txt' }}" download> Text </a></li>
+                   </ul>
+               </div>
+
+               </div>
+
+            </div>
+        </div> -->
+      <!-- </div> -->
+
+      <!-- <div class="col"> -->
+        <div class="col-md-6">
+          <div class="thumbnail height_ref">
+             <strong>HDR image</strong>
+            <a href="{{ session['hdr_file'] + '.jpg' }}">
+              <img class="img-responsive" src="{{ session['hdr_file'] + '.jpg' }}" alt="HDR" style="width:100%">
+            </a>
+              <div class="caption">
+              <div class="btn-group">
+                  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-download"></i> Save HDR image <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li> <a href="{{ session['hdr_file'] + '.hdr' }}" download> RADIANCE RGBE</a></li>
+                    <li> <a href="{{ session['hdr_file'] + '.exr' }}" download> OpenEXR</a></li>
+                    <li> <a href="{{ session['hdr_file'] + '.tif' }}" download> LogLuv TIFF</a></li>
+                    <li> <a href="{{ session['hdr_file'] + '.jpg' }}" download> JPEG-HDR</a></li>
+                  </ul>
+              </div>
+              </div>
+          </div>
+        </div>
+      <!-- </div> -->
+
+      <!-- <div class="col"> -->
+        <div class="col-md-6">
+          <div class="thumbnail">
+             <strong>EXIF summary info of each image </strong>
+
+              <div id=#exif>
+
+
+                {% for image in session['input_images'] %}
+
+                <div class="row panel-heading">
+
+                  <a class="toggle-img" data-toggle="collapse" data-target="#collapse_img{{loop.index}}" >
+
+                    <div class="col-sm-6" style="text-align: left; padding-top: 3%;">
+                      <span class="toggle-icon glyphicon glyphicon-collapse-down"></span>{{image.split('/')[1]}}
+                    </div>
+
+                    <div class="col-sm-4">
+                      <img class="img-responsive img-icon-sm" src="{{session['input_images'][loop.index-1]}}" alt="{{session['input_images'][loop.index-1].split('/')[1]}}" >
+                    </div>
+                  </a>
+                </div>
+
+                <div  id="collapse_img{{loop.index}}" class="collapse panel-body">
+
+
+                    <pre>
+                    <table>
+                      {% for key, value in session['exif_images'][loop.index-1].items() %}
+                         <tr>
+                              <th> {{ key }} </th>
+                         <!-- </tr>
+                         <tr> -->
+                            <td> {{ value }} </td>
+                         </tr>
+                      {% endfor %}
+                      </table>
+                    </pre>
+
+
+                </div>
+                {% endfor %}
+
+              </div>
+          </div>
+        </div>
+
+      <!-- </div> -->
+
+
+       <div class="col-md-6">
+        <div class="thumbnail">
+          <div  id="curve" style="display: block; width: 100%; max-height:400px;" > </div>
+          <div class="caption">
+          <a href="{{session['rsp_path']}}" download>
+             <button class="btn btn-warning">
+               <i class="glyphicon glyphicon-download"></i>
+               <span alt="Coefficients of camera response curve">Save RSP file<span>
+             </button>
+            </a>
+          </div>
+        </div>
+       </div>
+
+
+
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-info">
+           <div class="panel-heading">
+             <a data-toggle="collapse" data-target="#logcollapse" >
+               <span class="toggle-icon glyphicon glyphicon-collapse-down"></span> Hdrgen log</a>
+           </div>
+           <div id="logcollapse" class="collapse panel-body"><pre>{{ session['hdrgen_output'] }}</pre></div>
+         </div>
+      </div>
+      </div>
+
+      <hr>
+    </div>
+    <div class="col-sm-1 side">
+      <!-- <?php
+        echo $_SESSION['exposure'] . ' - ' . $_SESSION['aperture'] . ' - ' . $_SESSION['iso'] ;
+      ?> -->
+    </div>
+  </div>
+</div>
+
+{% endblock%}

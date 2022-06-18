@@ -1,0 +1,109 @@
+{%extends "layout.html" %}
+
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='/js/upload.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid text-center">
+    <div class="row content">
+      <div class="col-sm-1 side">
+      </div>
+  
+      <div class="col-sm-10 text-left main">
+        <h2>Welcome</h2>
+  
+        <div class="alert alert-danger alert-dismissible" style="display:none">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Error!</strong> <span id="erro"></span>
+        </div>
+        
+        <hr>
+  
+  
+        <form id="imgUpload" class="upload_imgs" enctype="multipart/form-data" action="{{ url_for('handle_form') }}" method="POST">
+  
+          <label for="img-input">JPEG or Tiff images from camera:<br></label>
+          <div id="myDrop", class="dropzone">
+          <div id="img-input" class="mydropzone dz-default dz-clickable dz-message">
+            <div id="loco" class="dz-message">
+              Drag and drop the images or <button type="button" class='btn btn-info btn-xs'>Select</button> to upload
+            </div>
+            <!-- <div class="fallback">
+              <label for="img_imput2">JPEG or Tiff images from camera:<br></label>
+              <input id="img_input2" class="form-control input-lg" size="60" type="file" name="img[]"  multiple="multiple"><br>
+            </div> -->
+          </div>
+          </div>
+      <!-- </form>
+      <form id="img-upload2" class="2" action="{{ url_for('upload') }}" > -->
+        </br>
+        <div class="form-group">
+          <label for="rspfile">Response Curve:</label>
+          <input id="rspfile" class="form-control input-lg" size="60" type="file" name="rsp" accept=".rsp">
+  <span class="help-block">If you have used the Light Photo Analyzer before and kept the RSP file with the camera response curve, you may upload it here.</span>
+         </div>
+  
+          <div class="form-group" style="display: none;">
+            <label for="set_calib">Calibration factor: </label>
+              <input id="set_calib" class="form-control input-lg" name="calib" size="4" maxsize="4" value="1.0" type="text">
+      <span class="help-block">See <a href="http://www.jaloxa.eu/webhdr/calibrate.shtml">Camera Calibration</a> for instructions.</span>
+          </div>
+  
+            <!--<div class="checkbox">-->
+                <input id="set_align" name="align" value="1" checked="checked" type="checkbox">
+                <label for="set_align"> Auto-align images </label>
+                <span class="help-block">Only disable this if the sequence was taken with a stable tripod and a camera remote shutter control.</span>
+            <!--</div>-->
+  
+  
+            <!--<div class="checkbox">-->
+              <input id="set_flare" name="flare" value="1" type="checkbox">
+              <label for="set_flate">Remove lens flare </label>
+             <span class="help-block">The inherent limitations of the optical systems in cameras causes some of the light
+            to be scattered. This is most noticeable close to very bright areas of the image where
+            some of the light spills over onto the darker regions.
+            Enabling the lens flare removal will result in crisper images with a slightly better
+            contrast, especially around bright light sources.</span>
+          <!--</div>-->
+  
+          <!--<div class="checkbox">-->
+            <input id="set_ghost" name="ghost" value="1" type="checkbox">
+            <label for="set_ghost"> Ghost removal. </label>
+           <span class="help-block">This option attempts to remove moving or changing objects in a scene,
+             which cause ghosts in the combined output.</span>
+           <!--</div>-->
+        </form>
+
+        </br>
+          <p class="upload text-center">
+    
+            <button id="submit-all" class="btn btn-primary btn-lg start" type="submit" form="img-upload">
+              <i class="glyphicon glyphicon-upload"></i>
+              <span>Start Upload</span>
+            </button>
+            <div class="progress" style="display: none;">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                aria-valuemin="0" aria-valuemax="100" style="width:100%; height:20px; ">
+                Processing images...
+                </div>
+            </div>
+            <!-- <input id="submit-all" value="Generate HDR" type="submit"> -->
+          </p>
+  
+      
+        <hr>
+    </div>
+  
+  
+  
+      <div class="col-sm-1 side">
+      </div>
+  
+      </div>
+    </div>
+  
+
+{% endblock %}

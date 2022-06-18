@@ -1,0 +1,157 @@
+{%extends "layout.html" %}
+
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='/js/luminance.js') }}"></script>
+    <script src="{{ url_for('static', filename='/js/config_fc.js') }}"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script src="{{ url_for('static', filename='./js/plot_heatmap.js') }}"></script>
+    <script>
+      plot_heatmap("{{ session['hdr_file'] + '.lumi' }}")
+    </script>
+
+
+{% endblock %}
+
+{% block content %}
+ 
+<div class="container-fluid text-center">
+
+  <div class="row content">
+
+    <div class="col-sm-1 side"></div>
+
+
+    <div class="col-sm-10 text-left main">
+
+      <div class="row">
+
+        <div class="col-md-12">
+          <div class="panel panel-info">
+           <div class="panel-heading">
+             <a data-toggle="collapse" data-target="#logcollapse" >
+               <span class="toggle-icon glyphicon glyphicon-collapse-down"></span>Plot</a>
+           </div>
+           <div id="logcollapse" class="collapse in panel-body"> 
+            
+          
+            <div id="spiner">
+              <img src="{{ url_for('static', filename='Spin-1s-200px.svg') }}"/>
+            </div>
+
+             <div id="heatmap"></div>
+            </div>
+         </div>
+      </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-info">
+           <div class="panel-heading">
+             <a data-toggle="collapse" data-target="#racollapse" >
+               <span class="toggle-icon glyphicon glyphicon-collapse-down"></span>Radiance False Color</a>
+           </div>
+           <div id="racollapse" class="collapse panel-body"> 
+            <hr>
+            <center>
+            <div id="loading"></div>
+            <img id="false" src="{{ session['hdr_file'] + '_fc.jpg' }}" class="img-responsive">
+      
+            <hr>
+            </center>
+            <form id="falsecolor-config" action="{{url_for('falsecolor')}}" method="post">
+              <div class="panel panel-primary">
+                <div class="panel-heading">False colour settings</div>
+                <div class="panel-body">
+                <div class="row">
+      
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="set_display">Display:</label>
+                      <select id="set_display" name="display">
+                        <option value="fc">False color</option>
+                        <option value="cl">Contour lines</option>
+                        <option value="cb">Contour bands</option>
+                      </select>
+                    </div>
+              <div class="form-group">
+                      <label for="set_pallet">Color palette</label>
+                      <select id="set_pallet" name="palette">
+                        <option value="def">Default</option>
+                        <option value="spec">Spectral</option>
+                        <option value="hot">Thermal</option>
+                        <option value="pm3d">pm3d</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <input id="set_extrema_points" name="points" value="1" checked="checked" type="checkbox">
+                      <label for="set_extrema_points"> Print extrema points</label>
+                    </div>
+      
+                    <div class="form-group">
+                      <label for="set_ndivs"> Number of countors or lines: </label>
+                      <input type="text" id="set_ndivs" name="ndivs" value="10" size="2" maxlength="2">
+                    </div>
+      
+                    <div class="form-group">
+                      <label for="set_scale"> Scale: </label>
+                      <input type="text" id="set_scale" name="scale" value="auto", size="8">
+                      <label for="set_scale"> cd/m<sup>2</sup> </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="set_mult"> Multiplier: </label>
+                      <input type="text" id="set_mult" name="mult" value="179", size="3">
+                    </div>
+      
+                    <div class="form-group">
+                      <label for="set_map_lin"> Mapping: </label> </br>
+                      <input type="radio" id="set_map_lin" name="map" value='linear'> Linear </br>
+                      <input type="radio" id="set_map_log" name="map" value='log' checked> Logarithmic </br>
+                    </div>
+      
+                    <div id="div_log_value" class="form-group">
+                    <label for="set_log_value"> Number of decades: </label>
+                    <select id="set_log_value" name="log_value">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3" selected="selected">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </div>
+                  </div>
+                </div>
+      
+                <center>
+                  <button id="reset_fc" class="btn btn-primary" type="reset">
+                    <i class="glyphicon glyphicon-restart"></i>
+                    <span>Reset settings</span>
+                  </button>
+                  <button id="update_fc" class="btn btn-primary" type="button">
+                    <i class="glyphicon glyphicon-restart"></i>
+                    <span>Update falsecolor</span>
+                  </button>
+                </center>
+      
+              </div>
+              </div>
+            </form>
+    
+            <hr>
+             
+         </div>
+      </div>
+      </div>
+      
+  </div>
+
+    <div class="col-sm-1 side">
+    </div>
+
+  </div>
+</div>
+
+  {% endblock%}
