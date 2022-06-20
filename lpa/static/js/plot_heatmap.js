@@ -1,3 +1,30 @@
+function getPixelMatrix(url) {
+    var img = new Image();
+    img.src = url;
+    var canvas = document.createElement('canvas');
+    canvas.setAttribute("width", img.width);
+    canvas.setAttribute("height", img.height);
+    var context = canvas.getContext('2d');
+    context.drawImage(img, 0, 0, img.width, img.height);
+    var img_data = context.getImageData(0, 0, img.width, img.height).data
+    var matrix = [];
+    var indx;
+    for(var i = 0; i < img.height; i++){
+        matrix[i] = [];
+        for(var j = 0; j < img.width; j++){
+            matrix[i][j] = []
+            indx =  ( (img.height-1-i)*img.width + j) * 4;
+
+            for (k = 0;  k < 4; k++){
+                matrix[i][j][k] = img_data[indx+k]
+            }
+            if (i == 0 && j < 10){
+            }
+        }
+    }
+    return matrix
+  }
+
 function plot_heatmap(filename){
 
     var xhttp = new XMLHttpRequest();
@@ -8,7 +35,10 @@ function plot_heatmap(filename){
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
 
-            //document.getElementById("demo").innerHTML = this.responseText;
+            var img_url = '/'+filename.replace('.lumi', '.jpg')
+            // console.log(img_url)
+            var img = getPixelMatrix(img_url)
+            // console.log('image_matrix', img[0][0])
             var data = this.responseText;
 
             var values = data.split('\n');
@@ -50,7 +80,7 @@ function plot_heatmap(filename){
                 }
             }
             
-        
+            console.log(matrix)
             var n_ticks = 5;
         
             var tick_vals = [];
@@ -115,7 +145,6 @@ function plot_heatmap(filename){
             var button_layer_1_height = 1.2
             var button_layer_2_height = 0
             var annotation_offset = 0.1
-        
         
             a_y_min = -30
             a_y_max = -30
@@ -201,6 +230,21 @@ function plot_heatmap(filename){
                     constrain: 'domain',
                     scaleanchor: 'x'
                 },
+                // images: [
+                //     {
+                        
+                //         "source": "https://images.plot.ly/language-icons/api-home/js-logo.png", //'/' + filename.replace('.lumi', '.jpg'),
+                //         "xref": "x",
+                //         "yref": "paper",
+                //         "x": 3,
+                //         "y": 0,
+                //         "sizex": 0.5,
+                //         "sizey": 1,
+                //         "opacity": 1,
+                //         "xanchor": "right",
+                //         "yanchor": "middle"
+                //     }
+                // ],
                 annotations: [],
                 updatemenus: [
                     // log/linear Scale 
@@ -333,13 +377,18 @@ function plot_heatmap(filename){
                         yanchor: 'top',
                         buttons: [
                             {
-                                args: ['type', 'heatmap'],
+                                args: [{'type':'heatmap', z: [log_matrix]}],
                                 label:'Heatmap',
                                 method:'restyle'
                             },
                             {
-                                args: ['type', 'contour'],
+                                args: [{'type':'contour', z: [log_matrix]}],
                                 label:'Contour',
+                                method:'restyle'
+                            },
+                            {
+                                args: [{'type':'image', z: [img]}],
+                                label:'Image',
                                 method:'restyle'
                             }
                         ],
