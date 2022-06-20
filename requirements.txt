@@ -3,7 +3,7 @@ Flask==2.1.2
 gunicorn==20.1.0
 itsdangerous==2.1.2
 Jinja2==3.1.2
--e git+ssh://git@github.com/acssantos/light_photo_analyzer.git@2ff401c921c50f670a463e5945c524ef17028527#egg=light_photo_analyzer
+light-photo-analyzer @ git+ssh://git@github.com/acssantos/light_photo_analyzer.git@deploy
 MarkupSafe==2.1.1
 Pillow==9.1.1
 Werkzeug==2.1.2
