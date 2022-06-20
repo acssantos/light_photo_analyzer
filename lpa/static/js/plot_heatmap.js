@@ -188,9 +188,9 @@ function plot_heatmap(filename){
               }]
         
             var layout = {
-                autosize: true,
-                //width: 400,
-                //height: 600,
+                //autosize: true,
+                width: width,
+                height: height,
                 margin:{l:20, r:20, t:20, b:20, autoexpand:true},
                 xaxis: {
                     visible:false,
