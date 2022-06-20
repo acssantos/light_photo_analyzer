@@ -1,5 +1,6 @@
 venv/
 images/*
+!images/.gitkeep 
 
 *.pyc
 __pycache__/
